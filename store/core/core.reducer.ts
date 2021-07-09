@@ -17,7 +17,7 @@ export const coreReducer = createReducer(initialState, builder => (
       state.moduleTitle = action.payload
     })
     .addCase(setModuleConfig, (state, action) => {
-      state.moduleTitle = action.payload
+      state.moduleConfig = action.payload
     })
     .addCase(appendNotificationMessages, (state, action) => {
       if (state.notificationMessages.length >= 5) {
