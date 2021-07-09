@@ -17,3 +17,33 @@ a {
 * {
   box-sizing: border-box;
 }
+
+li.menu-item {
+  margin: 0 16px;
+
+  &.menu-register {
+    margin: 0 0 0 16px;
+
+    a {
+      padding: 4px 18px;
+      background-color: #232323;
+      color: #fcae12;
+      font-size: 10px;
+      line-height: 1;
+      border: 2px solid #c98b0e;
+      border-radius: 999px;
+    }
+  }
+
+  &.menu-login {
+    font-size: 14px;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+}
+
+.swiper-container {
+  height: 100%;
+}
