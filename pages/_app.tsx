@@ -5,7 +5,9 @@ import { extendTheme, ChakraProvider  } from '@chakra-ui/react';
 
 import { theme } from 'config';
 import { persistor, store } from 'store';
-import { Header } from 'components/core';
+import { Box } from '@chakra-ui/react';
+
+import { Footer, Header } from 'components/core';
 
 import 'swiper/swiper.scss';
 import 'swiper/components/pagination/pagination.scss';
@@ -18,7 +20,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
     <PersistGate persistor={persistor}>
       <ChakraProvider theme={extendTheme(theme)}>
         <Header />
-        <Component {...pageProps} />
+        <Box pb='55px' minH='100vh'>
+          <Component {...pageProps} />
+        </Box>
+        <Footer />
       </ChakraProvider>
     </PersistGate>
   </Provider>
