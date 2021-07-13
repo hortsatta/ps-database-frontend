@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import Link from 'next/link';
-import { Box, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
+import { Box, Heading, Image, Link as CLink, Text, useTheme } from '@chakra-ui/react';
 import { SwiperSlide } from 'swiper/react';
 
 import { News } from 'models';
@@ -68,72 +68,76 @@ const NewsSlide: FC<NewsSlideProps> = ({ item }) => {
   );
 };
 
-const SlideTitle: FC = ({ children }) => (
-  <Box
-    pos='absolute'
-    bottom='-14px'
-    d='flex' 
-    alignItems='center'
-    h='28px'
-    zIndex='1'
-  >
+const SlideTitle: FC = ({ children }) => {
+  const { colors } = useTheme();
+
+  return (
     <Box
-      pos='relative'
-      d='flex'
+      pos='absolute'
+      bottom='-14px'
+      d='flex' 
       alignItems='center'
-      h='100%'
-      zIndex={1}
+      h='28px'
+      zIndex='1'
     >
-      <Heading
-        as='h4'
+      <Box
+        pos='relative'
         d='flex'
         alignItems='center'
-        pl='10px'
-        w='535px'
-        h='100%'
-        bgColor='#00c6ae'
-        fontSize='14px'
-        fontWeight={400}
-        textTransform='uppercase'
-        line-height={1}
-        border='1px solid #0c0c0c'
+        h='full'
+        zIndex={1}
       >
-        <Link href='/' passHref>
-          <CLink>{children}</CLink>
-        </Link>
-      </Heading>
-      <Box ml='-1px'>
-        <svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>
-          <g>
-            <polygon fill='#00c6ae' points='28 0 0 0 0 28 28 0'/>
-            <polygon fill='#0c0c0c' points='0 1 25.6 1 2.9 23.6 0 26.6 0 28 28 0 0 0 0 1'/>
-          </g>
+        <Heading
+          as='h4'
+          d='flex'
+          alignItems='center'
+          pl='10px'
+          w='535px'
+          h='full'
+          bgColor='brand.300'
+          fontSize='14px'
+          fontWeight={400}
+          textTransform='uppercase'
+          line-height={1}
+          border='1px solid #0c0c0c'
+        >
+          <Link href='/' passHref>
+            <CLink>{children}</CLink>
+          </Link>
+        </Heading>
+        <Box ml='-1px'>
+          <svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>
+            <g>
+              <polygon fill={colors.brand[300]} points='28 0 0 0 0 28 28 0'/>
+              <polygon fill='#0c0c0c' points='0 1 25.6 1 2.9 23.6 0 26.6 0 28 28 0 0 0 0 1'/>
+            </g>
+          </svg>
+        </Box>
+      </Box>
+      <Box ml='-30px' d='flex' alignItems='center' h='full'>
+        <Heading
+          as='h4'
+          d='flex'
+          alignItems='center'
+          justifyContent='center'
+          pl='30px'
+          w='138px'
+          h='full'
+          bgColor='#0c0c0c'
+          fontSize='14px'
+          fontWeight={400}
+          textTransform='uppercase'
+          line-height={1}
+        >
+          News
+        </Heading>
+        <svg xmlns='http://www.w3.org/2000/svg' width='14' height='28' viewBox='0 0 14 28'>
+          <g><polygon fill='#0c0c0c' points='0 28 14 14 0 0 0 28'/></g>
         </svg>
       </Box>
     </Box>
-    <Box ml='-30px' d='flex' alignItems='center' h='100%'>
-      <Heading
-        as='h4'
-        d='flex'
-        alignItems='center'
-        justifyContent='center'
-        pl='30px'
-        w='138px'
-        h='100%'
-        bgColor='#0c0c0c'
-        fontSize='14px'
-        fontWeight={400}
-        textTransform='uppercase'
-        line-height={1}
-      >
-        News
-      </Heading>
-      <svg xmlns='http://www.w3.org/2000/svg' width='14' height='28' viewBox='0 0 14 28'>
-        <g><polygon fill='#0c0c0c' points='0 28 14 14 0 0 0 28'/></g>
-      </svg>
-    </Box>
-  </Box>
-);
+  );
+};
 
 export const NewsCarousel: FC = () => {
   const [slideTitle, setSlideTitle] = useState('');

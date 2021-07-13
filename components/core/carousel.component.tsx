@@ -13,7 +13,7 @@ export const Carousel: FC<Swiper> = ({
   children,
   onSlideChange
 }) => (
-  <Box w='100%' h='100%' bgColor='#333333' border='1px solid #0c0c0c'>
+  <Box w='full' h='full' bgColor='#333333' border='1px solid #0c0c0c'>
     <Swiper
       className='swiper'
       pagination={{ type: 'progressbar' }}

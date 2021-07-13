@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import Link from 'next/link';
-import { Box, Heading, Image, Link as CLink, Text } from '@chakra-ui/react';
+import { Box, Heading, Image, Link as CLink, Text, useTheme } from '@chakra-ui/react';
 import { SwiperSlide } from 'swiper/react';
 
 import { Review } from 'models';
@@ -109,72 +109,76 @@ const ReviewSlide: FC<ReviewSlideProps> = ({ item }) => {
   );
 };
 
-const SlideTitle: FC = ({ children }) => (
-  <Box
-    pos='absolute'
-    right={0}
-    bottom='-14px'
-    d='flex' 
-    alignItems='center'
-    h='28px'
-    zIndex='1'
-  >
-    <Box mr='-30px' d='flex' alignItems='center' h='100%'>
-      <svg xmlns='http://www.w3.org/2000/svg' width='14' height='28' viewBox='0 0 14 28'>
-        <g><polygon fill='#0c0c0c' points='14 28 0 14 14 0 14 28'/></g>
-      </svg>
-      <Heading
-        as='h4'
-        d='flex'
-        alignItems='center'
-        justifyContent='center'
-        pr='30px'
-        w='138px'
-        h='100%'
-        bgColor='#0c0c0c'
-        fontSize='14px'
-        fontWeight={400}
-        textTransform='uppercase'
-        line-height={1}
-      >
-        Reviews
-      </Heading>
-    </Box>
+const SlideTitle: FC = ({ children }) => {
+  const { colors } = useTheme();
+  
+  return (
     <Box
-      d='flex'
+      pos='absolute'
+      right={0}
+      bottom='-14px'
+      d='flex' 
       alignItems='center'
-      h='100%'
+      h='28px'
+      zIndex='1'
     >
-      <Box position='relative' mr='-1px' zIndex='1'>
-        <svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>
-          <g>
-            <polygon fill='#df0024' points='0 0 28 0 28 28 0 0'/>
-            <path fill='#0c0c0c' d='M28,26.6,2.4,1H28V0H0L28,28Z'/>
-          </g>
+      <Box mr='-30px' d='flex' alignItems='center' h='full'>
+        <svg xmlns='http://www.w3.org/2000/svg' width='14' height='28' viewBox='0 0 14 28'>
+          <g><polygon fill='#0c0c0c' points='14 28 0 14 14 0 14 28'/></g>
         </svg>
+        <Heading
+          as='h4'
+          d='flex'
+          alignItems='center'
+          justifyContent='center'
+          pr='30px'
+          w='138px'
+          h='full'
+          bgColor='#0c0c0c'
+          fontSize='14px'
+          fontWeight={400}
+          textTransform='uppercase'
+          line-height={1}
+        >
+          Reviews
+        </Heading>
       </Box>
-      <Heading
-        as='h4'
+      <Box
         d='flex'
-        justifyContent='flex-end'
         alignItems='center'
-        pr='10px'
-        w='535px'
-        h='100%'
-        bgColor='#df0024'
-        fontSize='14px'
-        fontWeight={400}
-        textTransform='uppercase'
-        line-height={1}
-        border='1px solid #0c0c0c'
+        h='full'
       >
-        <Link href='/' passHref>
-          <CLink textAlign='right'>{children}</CLink>
-        </Link>
-      </Heading>
+        <Box position='relative' mr='-1px' zIndex='1'>
+          <svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>
+            <g>
+              <polygon fill={colors.brand[400]} points='0 0 28 0 28 28 0 0'/>
+              <path fill='#0c0c0c' d='M28,26.6,2.4,1H28V0H0L28,28Z'/>
+            </g>
+          </svg>
+        </Box>
+        <Heading
+          as='h4'
+          d='flex'
+          justifyContent='flex-end'
+          alignItems='center'
+          pr='10px'
+          w='535px'
+          h='full'
+          bgColor='brand.400'
+          fontSize='14px'
+          fontWeight={400}
+          textTransform='uppercase'
+          line-height={1}
+          border='1px solid #0c0c0c'
+        >
+          <Link href='/' passHref>
+            <CLink textAlign='right'>{children}</CLink>
+          </Link>
+        </Heading>
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 export const ReviewsCarousel: FC = () => {
   const [slideTitle, setSlideTitle] = useState('');

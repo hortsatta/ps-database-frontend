@@ -1,15 +1,14 @@
 import { FC } from 'react';
-import { Container } from '@chakra-ui/react';
+import { Container, ContainerProps } from '@chakra-ui/react';
 
-type Props = {
-  pt?: string;
-  pb?: string;
-  zIndex?: number;
+type Props = ContainerProps & {
   first?: boolean;
 }
 
-export const Layout: FC<Props> = ({ first, pt, pb, zIndex, children }) => (
+export const Layout: FC<Props> = ({ pt, pb, h, zIndex, first, children }) => (
   <Container
+    h={h}
+    pos='relative'
     margin='0 auto'
     px={0}
     pt={first ? '160px' : pt}

@@ -46,16 +46,22 @@ export const Header: FC = () => {
       w='full'
       px={6}
       py={4}
+      bgColor='#0a0a0a'
       bgImg='url(/assets/svgs/header-bg.svg)'
       bgRepeat='repeat-x'
       zIndex={999}
     >
-      <Box d='flex' alignItems='center' h='100%'>
+      <Box d='flex' alignItems='center' h='full'>
         <Box mr='14px' d='flex'>
           <Image src='/assets/svgs/ps-logo.svg' alt='logo' width={59} height={46} />
         </Box>
         <Link href='/' passHref>
-          <CLink d='flex' alignItems='center'>
+          <CLink
+            d='flex'
+            alignItems='center'
+            _hover={{ textDecor: 'none' }}
+            _focus={{ textDecor: 'none' }}
+          >
             <Box mr='24px' d='flex'>
               <Image src='/assets/svgs/logo.svg' alt='logo' width={167} height={42} />
             </Box>
@@ -63,7 +69,7 @@ export const Header: FC = () => {
               as='h1'
               d='flex'
               flexDir='column'
-              h='100%'
+              h='full'
               color='#ffffff'
               fontSize='30px'
               textTransform='uppercase'
