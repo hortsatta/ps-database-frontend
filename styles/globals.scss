@@ -21,6 +21,7 @@ a {
 li.menu-item {
   margin: 0 16px;
 
+  &.menu-account,
   &.menu-register {
     margin: 0 0 0 16px;
 
@@ -53,7 +54,8 @@ li.menu-item {
   width: 100%;
 }
 
-.register-form {
+.register-form,
+.login-form-2 {
   right: 0%;
   transform: scale(1);
 };
@@ -62,3 +64,12 @@ li.menu-item {
   left: 100%;
   transform: scale(0.85);
 };
+
+.register-form-2 {
+  right: 100%;
+  transform: scale(0.85);
+};
+
+#chakra-toast-manager-bottom {
+  transform: translateY(-65px);
+}
