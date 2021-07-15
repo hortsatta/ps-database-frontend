@@ -6,3 +6,4 @@ export * from './nav.component';
 export * from './nav-item.component';
 export * from './nav-item-active.component';
 export * from './newsletter.component';
+export * from './notification-toast.component';
