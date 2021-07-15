@@ -1,4 +1,5 @@
-import { FC, FormEvent } from 'react';
+import { useState, FC, FormEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,16 +11,24 @@ import {
   FormLabel,
   Input,
   SimpleGrid,
+  Tooltip,
   VisuallyHidden
 } from '@chakra-ui/react';
+import { WarningTwoIcon } from '@chakra-ui/icons'
 
-type FormData = {
-  username: string;
-  email: string;
-  password: string;
+import { UserCredential } from 'models';
+import { register } from 'services';
+import { appendNotificationMessages } from 'store/core';
+import {
+  loginFailure,
+  loginStart,
+  loginSuccess,
+  selectLoading
+} from 'store/auth';
+
+type FormData = UserCredential & {
   confirmPassword: string;
 }
-
 const defaultValues: FormData = {
   username: '',
   email: '',
@@ -36,18 +45,46 @@ const schema = z
   })
   .refine(
     data => data.password === data.confirmPassword,
-    { path: ['confirmPassword'] }
+    { path: ['confirmPassword'], message: 'Password does not match' }
   );
 
 export const RegisterForm: FC = () => {
+  const dispatch = useDispatch();
+  const authLoading = useSelector(selectLoading);
+  const [loading, setLoading] = useState(false);
+
   const methods = useForm<FormData>({ defaultValues, resolver: zodResolver(schema) });
-  const { control, handleSubmit, reset } = methods;
+  const { control, formState: { errors }, handleSubmit, reset } = methods;
 
   const handleSubmission = (e: FormEvent) => {
     e.preventDefault();
 
-    handleSubmit(async (userData: FormData) => {
-      console.log(userData);
+    handleSubmit(async (formData: FormData) => {
+      setLoading(true);
+
+      try {
+        const { username, email, password } = formData;
+        const user = await register({ username, email, password });
+
+        dispatch(loginStart());
+        const debounce = setTimeout(() => {
+          setLoading(false);
+          dispatch(loginSuccess(user));
+          dispatch(appendNotificationMessages({
+            status: 'success',
+            message: 'Your account has been created'
+          }));
+
+          clearTimeout(debounce);
+        }, 1500);
+      } catch (error) {
+        setLoading(false);
+        dispatch(loginFailure());
+        dispatch(appendNotificationMessages({
+          status: 'error',
+          message: error.message
+        }));
+      }
     })(e);
   };
 
@@ -74,22 +111,28 @@ export const RegisterForm: FC = () => {
             control={control}
             render={
               ({
-                fieldState: { error },
+                fieldState: { error, isTouched },
                 field: { onChange, onBlur, value }
               }) => (
-                <Box>
+                <FormControl isInvalid={!!error && isTouched}>
                   <VisuallyHidden>Username</VisuallyHidden>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      variant='flushed'
-                      value={value}
-                      onBlur={onBlur}
-                      onChange={val => onChange(val)}
-                      isInvalid={!!error}
-                    />
-                  </FormControl>
-                </Box>
+                  <Box d='flex' alignItems='center'>
+                    <FormLabel>Username</FormLabel>
+                    {(!!error && isTouched) && <Tooltip
+                      label={error?.message}
+                      aria-label={error?.message}
+                    >
+                      <WarningTwoIcon />
+                    </Tooltip>}
+                  </Box>
+                  <Input
+                    variant='flushed'
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={val => onChange(val)}
+                    isInvalid={!!error}
+                  />
+                </FormControl>
               )
             }
           />
@@ -98,23 +141,29 @@ export const RegisterForm: FC = () => {
             control={control}
             render={
               ({
-                fieldState: { error },
+                fieldState: { error, isTouched },
                 field: { onChange, onBlur, value }
               }) => (
-                <Box>
+                <FormControl isInvalid={!!error && isTouched}>
                   <VisuallyHidden>Email Address</VisuallyHidden>
-                  <FormLabel>Email Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='email'
-                      variant='flushed'
-                      value={value}
-                      onBlur={onBlur}
-                      onChange={val => onChange(val)}
-                      isInvalid={!!error}
-                    />
-                  </FormControl>
-                </Box>
+                  <Box d='flex' alignItems='center'>
+                    <FormLabel>Email Address</FormLabel>
+                    {(!!error && isTouched) && <Tooltip
+                      label={error?.message}
+                      aria-label={error?.message}
+                    >
+                      <WarningTwoIcon />
+                    </Tooltip>}
+                  </Box>
+                  <Input
+                    type='email'
+                    variant='flushed'
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={val => onChange(val)}
+                    isInvalid={!!error}
+                  />
+                </FormControl>
               )
             }
           />
@@ -123,23 +172,29 @@ export const RegisterForm: FC = () => {
             control={control}
             render={
               ({
-                fieldState: { error },
+                fieldState: { error, isTouched },
                 field: { onChange, onBlur, value }
               }) => (
-                <Box>
+                <FormControl isInvalid={!!error && isTouched}>
                   <VisuallyHidden>Password</VisuallyHidden>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='password'
-                      variant='flushed'
-                      value={value}
-                      onBlur={onBlur}
-                      onChange={val => onChange(val)}
-                      isInvalid={!!error}
-                    />
-                  </FormControl>
-                </Box>
+                  <Box d='flex' alignItems='center'>
+                    <FormLabel>Password</FormLabel>
+                    {(!!error && isTouched) && <Tooltip
+                      label={error?.message}
+                      aria-label={error?.message}
+                    >
+                      <WarningTwoIcon />
+                    </Tooltip>}
+                  </Box>
+                  <Input
+                    type='password'
+                    variant='flushed'
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={val => onChange(val)}
+                    isInvalid={!!error}
+                  />
+                </FormControl>
               )
             }
           />
@@ -148,23 +203,29 @@ export const RegisterForm: FC = () => {
             control={control}
             render={
               ({
-                fieldState: { error },
+                fieldState: { error, isTouched },
                 field: { onChange, onBlur, value }
               }) => (
-                <Box>
+                <FormControl isInvalid={!!error && isTouched}>
                   <VisuallyHidden>Repeat Password</VisuallyHidden>
-                  <FormLabel>Repeat Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='password'
-                      variant='flushed'
-                      value={value}
-                      onBlur={onBlur}
-                      onChange={val => onChange(val)}
-                      isInvalid={!!error}
-                    />
-                  </FormControl>
-                </Box>
+                  <Box d='flex' alignItems='center'>
+                    <FormLabel>Repeat Password</FormLabel>
+                    {(!!error && isTouched) && <Tooltip
+                      label={error?.message}
+                      aria-label={error?.message}
+                    >
+                      <WarningTwoIcon />
+                    </Tooltip>}
+                  </Box>
+                  <Input
+                    type='password'
+                    variant='flushed'
+                    value={value}
+                    onBlur={onBlur}
+                    onChange={val => onChange(val)}
+                    isInvalid={!!error}
+                  />
+                </FormControl>
               )
             }
           />
@@ -187,6 +248,7 @@ export const RegisterForm: FC = () => {
             bgColor='brand.100'
             color='brand.200'
             borderColor='brand.200'
+            isLoading={loading || authLoading}
           >
             Create Account
           </Button>

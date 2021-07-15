@@ -1,4 +1,5 @@
 import { FC, FormEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,34 +10,60 @@ import {
   FormControl,
   FormLabel,
   Input,
-  SimpleGrid,
   VisuallyHidden
 } from '@chakra-ui/react';
 
-type FormData = {
-  email: string;
-  password: string;
-}
+import { AuthCredential } from 'models';
+import { login } from 'services';
+import { appendNotificationMessages } from 'store/core';
+import {
+  loginFailure,
+  loginStart,
+  loginSuccess,
+  selectLoading
+} from 'store/auth';
 
-const defaultValues: FormData = {
-  email: '',
+const defaultValues: AuthCredential = {
+  identifier: '',
   password: ''
 };
 
 const schema = z.object({
-  email: z.string(),
+  identifier: z.string(),
   password: z.string().min(6)
 });
 
 export const LoginForm: FC = () => {
-  const methods = useForm<FormData>({ defaultValues, resolver: zodResolver(schema) });
+  const dispatch = useDispatch();
+  const authLoading = useSelector(selectLoading);
+  const methods = useForm<AuthCredential>({ defaultValues, resolver: zodResolver(schema) });
   const { control, handleSubmit } = methods;
 
   const handleSubmission = (e: FormEvent) => {
     e.preventDefault();
 
-    handleSubmit(async (userData: FormData) => {
-      console.log(userData);
+    handleSubmit(async (credential: AuthCredential) => {
+      try {
+        dispatch(loginStart());
+
+        const user = await login(credential);
+
+        const debounce = setTimeout(() => {
+          dispatch(loginSuccess(user));
+          dispatch(appendNotificationMessages({
+            status: 'success',
+            message: 'You are now logged in'
+          }));
+
+          clearTimeout(debounce);
+        }, 1500);
+      } catch (error) {
+        dispatch(loginFailure());
+        dispatch(appendNotificationMessages({
+          status: 'error',
+          message: error.message
+        }));
+      }
     })(e);
   };
 
@@ -51,7 +78,7 @@ export const LoginForm: FC = () => {
           bgColor='brand.100'
         >
           <Controller
-            name='email'
+            name='identifier'
             control={control}
             render={
               ({
@@ -63,7 +90,7 @@ export const LoginForm: FC = () => {
                   <FormLabel>Email or Username</FormLabel>
                   <FormControl>
                     <Input
-                      type='email'
+                      type='text'
                       variant='flushed'
                       value={value}
                       onBlur={onBlur}
@@ -117,6 +144,7 @@ export const LoginForm: FC = () => {
             bgColor='brand.100'
             color='brand.200'
             borderColor='brand.200'
+            isLoading={authLoading}
           >
             Login
           </Button>
