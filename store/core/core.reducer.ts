@@ -3,7 +3,8 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   appendNotificationMessages,
   clearNotificationMessages,
-  setModuleConfig, setModuleTitle,
+  setModuleConfig,
+  setModuleTitle,
   toggleDarkMode
 } from './core.actions';
 import { initialState } from './core.state';
@@ -26,7 +27,7 @@ export const coreReducer = createReducer(initialState, builder => (
 
       state.notificationMessages.push(action.payload);
     })
-    .addCase(clearNotificationMessages, (state) => {
+    .addCase(clearNotificationMessages, state => {
       state.notificationMessages = [];
     })
     .addDefaultCase(state => state)

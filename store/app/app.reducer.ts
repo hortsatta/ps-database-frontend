@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 
 import { storage } from 'utils';
+import { authReducer } from '../auth/auth.reducer';
 import { coreReducer } from '../core/core.reducer';
 
 // Configure redux-persist to keep store data in localstorage,
@@ -9,7 +10,7 @@ import { coreReducer } from '../core/core.reducer';
 const appPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['core']
+  blacklist: ['core', 'auth']
 };
 
 const corePersistConfig = {
@@ -20,7 +21,8 @@ const corePersistConfig = {
 
 // Combine all reducers
 const appReducer = combineReducers({
-  core: persistReducer(corePersistConfig, coreReducer)
+  core: persistReducer(corePersistConfig, coreReducer),
+  auth: authReducer
 });
 
 const persistedReducer = persistReducer(appPersistConfig, appReducer);
