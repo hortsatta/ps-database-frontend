@@ -13,7 +13,7 @@ type ModuleConfig = {
 }
 
 type NotificationMessage = {
-  type: string;
+  status: 'success' | 'error' | 'warning' | 'info';
   message: string;
 }
 
