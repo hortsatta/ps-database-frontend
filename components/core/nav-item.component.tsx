@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import Link from 'next/link';
-import { Link as CLink, ListItem } from '@chakra-ui/react';
+import { Image as CImage, Link as CLink, ListItem } from '@chakra-ui/react';
 import clsx from 'clsx';
 
 import { fonts } from 'config';
@@ -13,7 +13,8 @@ type Props = {
 }
 
 export const NavItem: FC<Props> = ({ item, active }) => {
-  const { className, path, label } = item;
+  const { className, path, label, tooltip } = item;
+  const isAccount = tooltip.toLowerCase() === 'account';
 
   return (
     <ListItem
@@ -25,6 +26,18 @@ export const NavItem: FC<Props> = ({ item, active }) => {
     >
       <Link href={path} passHref>
         <CLink fontFamily={fonts.heading} _focus={{ boxShadow: 0 }}>
+          {isAccount && (
+            <CImage
+              src='/assets/svgs/user-robot.svg'
+              alt='account'
+              mr='8px'
+              mt='-2px'
+              d='inline-block'
+              w='14px'
+              h='14px'
+              boxSizing='content-box'
+            />
+          )}
           {label}
         </CLink>
       </Link>
