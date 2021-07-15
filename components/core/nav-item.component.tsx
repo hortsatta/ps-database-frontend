@@ -10,9 +10,10 @@ import { NavItemActive } from './nav-item-active.component';
 type Props = {
   item: Module;
   active?: boolean;
+  onClick?: () => void;
 }
 
-export const NavItem: FC<Props> = ({ item, active }) => {
+export const NavItem: FC<Props> = ({ item, active, children, onClick }) => {
   const { className, path, label, tooltip } = item;
   const isAccount = tooltip.toLowerCase() === 'account';
 
@@ -23,6 +24,7 @@ export const NavItem: FC<Props> = ({ item, active }) => {
       flexDir='column'
       justifyContent='center'
       alignItems='center'
+      {...onClick && { onClick }}
     >
       <Link href={path} passHref>
         <CLink fontFamily={fonts.heading} _focus={{ boxShadow: 0 }}>
@@ -41,6 +43,7 @@ export const NavItem: FC<Props> = ({ item, active }) => {
           {label}
         </CLink>
       </Link>
+      {children}
       {<NavItemActive hidden={!active} />}
     </ListItem>
   );

@@ -36,6 +36,10 @@ li.menu-item {
     }
   }
 
+  &.menu-account {
+    min-width: 270px;
+  }
+
   &.menu-login {
     font-size: 14px;
   }
