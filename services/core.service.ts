@@ -33,6 +33,13 @@ const moduleConfig: ModuleConfig = {
     label: 'Login',
     tooltip: 'Login',
     isMenuHidden: true,
+  },
+  account: {
+    className: 'menu-account',
+    path: '/account',
+    label: 'Account',
+    tooltip: 'Account',
+    isMenuHidden: true,
   }
 };
 
