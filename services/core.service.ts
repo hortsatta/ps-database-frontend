@@ -1,48 +1,17 @@
+import axios from 'axios';
+
+import { NEXT_API_URL, generateHeaders } from 'config';
 import { ModuleConfig } from 'models';
 
-// Temporary
-const moduleConfig: ModuleConfig = {
-  start: {
-    path: '/',
-    label: 'Start',
-    tooltip: 'Start',
-    isMenuHidden: false,
-  },
-  news: {
-    path: '/news',
-    label: 'News',
-    tooltip: 'Gaming News',
-    isMenuHidden: false,
-  },
-  reviews: {
-    path: '/reviews',
-    label: 'Reviews',
-    tooltip: 'Game Reviews',
-    isMenuHidden: false,
-  },
-  register: {
-    className: 'menu-register',
-    path: '/auth/register',
-    label: 'Register For Free',
-    tooltip: 'Register For Free',
-    isMenuHidden: true,
-  },
-  login: {
-    className: 'menu-login',
-    path: '/auth/login',
-    label: 'Login',
-    tooltip: 'Login',
-    isMenuHidden: true,
-  },
-  account: {
-    className: 'menu-account',
-    path: '/account',
-    label: 'Account',
-    tooltip: 'Account',
-    isMenuHidden: true,
-  }
-};
+export const getModuleConfig = async (): Promise<ModuleConfig> => {
+  const { status, data } = await axios.get(
+    `${NEXT_API_URL}/modules`,
+    generateHeaders()
+  );
 
-export const getModuleConfig = async (): Promise<ModuleConfig> => (
-  new Promise<ModuleConfig>(resolve => resolve(moduleConfig))
-)
+  if (status !== 200) {
+    throw new Error(data.message);
+  }
+
+  return new Promise<ModuleConfig>(resolve => resolve(data));
+};
