@@ -1,11 +1,25 @@
 import React, { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { Box, UnorderedList } from '@chakra-ui/react';
+import {
+  Box,
+  Link as CLink,
+  Image as CImage,
+  ListItem,
+  Progress,
+  UnorderedList
+} from '@chakra-ui/react';
 import Confetti from 'react-dom-confetti';
 
 import { Module, ModuleConfig } from 'models';
-import { selectCurrentUser, selectIsUserLoggedIn } from 'store/auth';
+import {
+  logoutStart,
+  logoutSuccess,
+  selectCurrentUser,
+  selectIsUserLoggedIn,
+  selectLoading
+} from 'store/auth';
+import { UserAccountMenu } from '../user-account';
 import { NavItem } from './nav-item.component';
 
 type Props = {
@@ -27,13 +41,18 @@ const confettiConfig = {
 };
 
 export const Nav: FC<Props> = ({ menus, moduleConfig }) => {
+  const dispatch = useDispatch();
   const router = useRouter();
+  const [fire, setFire] = useState(false);
+  const [openAccount, setOpenAccount] = useState(false);
+
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   const currentUser = useSelector(selectCurrentUser);
-  const [fire, setFire] = useState(false);
+  const loading = useSelector(selectLoading);
+
   const menuRegister = moduleConfig?.register || null; 
   const menuLogin = moduleConfig?.login  || null; 
-  const menuAccount = moduleConfig?.account  || null; 
+  const menuAccount = moduleConfig?.account  || null;
 
   const checkRoute = (path: string) => (
     router.asPath === path
@@ -45,6 +64,19 @@ export const Nav: FC<Props> = ({ menus, moduleConfig }) => {
       setFire(false);
       clearTimeout(debounce);
     }, 0);
+  };
+
+  const handleUserAccountToggle = (open: boolean) => {
+    setOpenAccount(open);
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutStart());
+
+    const debounce = setTimeout(() => {
+      dispatch(logoutSuccess());
+      clearTimeout(debounce);
+    }, 1500);
   };
 
   return (
@@ -62,15 +94,58 @@ export const Nav: FC<Props> = ({ menus, moduleConfig }) => {
             active={checkRoute(menu.path)}
           />
         ))}
-        {(!isUserLoggedIn && menuRegister) && (
-          <NavItem key={menuRegister.name} item={menuRegister} onClick={handleFireConfetti}>
-            <Confetti active={fire} config={confettiConfig} />
-          </NavItem>
-        )}
-        {(!isUserLoggedIn && menuLogin) && <NavItem key={menuLogin.name} item={menuLogin} />}
-        {(isUserLoggedIn && menuAccount) && (
-          <NavItem key={menuAccount.name} item={{ ...menuAccount, label: currentUser.username }} />
-        )}
+        {loading
+          ? (
+            <ListItem className='menu-item' d='flex' alignItems='center' w='279px'>
+              <Progress w='100%' size='xs' isIndeterminate />
+            </ListItem>
+          )
+          : (<>
+            {(!isUserLoggedIn && menuRegister) && (
+              <NavItem key={menuRegister.name} item={menuRegister} onClick={handleFireConfetti}>
+                <Confetti active={fire} config={confettiConfig} />
+              </NavItem>
+            )}
+            {(!isUserLoggedIn && menuLogin) && <NavItem key={menuLogin.name} item={menuLogin} />}
+            {(isUserLoggedIn && menuAccount) && (
+              <NavItem key={menuAccount.name} item={menuAccount} empty>
+                <CLink
+                  w='100%'
+                  p='4px 18px'
+                  bgColor='#232323'
+                  color='#fcae12'
+                  fontFamily='Clonoid'
+                  fontSize='10px'
+                  textAlign='center'
+                  lineHeight={1}
+                  border='2px solid'
+                  borderColor='brand.200'
+                  borderRadius='999px'
+                  whiteSpace='nowrap'
+                  variant='outline'
+                  onClick={() => handleUserAccountToggle(true)}
+                >
+                  <CImage
+                    src='/assets/svgs/user-robot.svg'
+                    alt='account'
+                    mr='8px'
+                    mt='-2px'
+                    d='inline-block'
+                    w='14px'
+                    h='14px'
+                    boxSizing='content-box'
+                  />
+                  {currentUser.username}
+                </CLink>
+                <UserAccountMenu
+                  open={openAccount}
+                  onClose={() => handleUserAccountToggle(false)}
+                  onLogout={handleLogout}
+                />
+              </NavItem>
+            )}
+          </>)
+        }
       </UnorderedList>
     </Box>
   );
