@@ -14,14 +14,21 @@ const parseUser = (data: any): User => {
     createdAt: created_at,
     updatedAt: updated_at
   };
-}
+};
 
-const checkSession = () => (
-  axios.get(
+const checkLoginSession = async () => {
+  const { status, data } = await axios.get(
     `${baseURL}/user`,
     generateHeaders()
-  )
-);
+  );
+
+  if (status !== 200) {
+    throw new Error(data.message);
+  }
+
+  const result = parseUser(data.user);
+  return new Promise<User>(resolve => resolve(result));
+};
 
 const login = async (credential: AuthCredential): Promise<User> => {
   const { status, data } = await axios.post(
@@ -61,4 +68,4 @@ const register = async (credential: UserCredential): Promise<User> => {
   return new Promise<User>(resolve => resolve(result));
 };
 
-export { checkSession, login, logout, register };
+export { checkLoginSession, login, logout, register };

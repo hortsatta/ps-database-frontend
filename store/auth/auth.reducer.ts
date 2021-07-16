@@ -1,7 +1,9 @@
 import { createReducer, isAnyOf } from '@reduxjs/toolkit';
 
 import {
-  checkLoginSession,
+  checkLoginSessionStart,
+  checkLoginSessionSuccess,
+  checkLoginSessionFailure,
   loginFailure,
   loginStart,
   loginSuccess,
@@ -13,18 +15,18 @@ import { initialState } from './auth.state';
 
 export const authReducer = createReducer(initialState, builder => (
   builder
-    .addCase(loginSuccess, (state, action) => { console.log(action.payload)
-      state.loading = false;
-      state.currentUser = action.payload
-    })
     .addCase(logoutSuccess, state => {
       state.loading = false;
       state.currentUser = undefined
     })
-    .addMatcher(isAnyOf (checkLoginSession, loginStart, logoutStart), state => {
+    .addMatcher(isAnyOf (checkLoginSessionSuccess, loginSuccess), (state, action) => {
+      state.loading = false;
+      state.currentUser = action.payload
+    })
+    .addMatcher(isAnyOf (checkLoginSessionStart, loginStart, logoutStart), state => { console.log('start');
       state.loading = true;
     })
-    .addMatcher(isAnyOf (loginFailure, logoutFailure), state => {
+    .addMatcher(isAnyOf (checkLoginSessionFailure, loginFailure, logoutFailure), state => {
       state.loading = false;
     })
     .addDefaultCase(state => state)
