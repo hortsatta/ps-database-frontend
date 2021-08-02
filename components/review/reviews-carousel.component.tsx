@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Box, Heading, Image, Link as CLink, Text, useTheme } from '@chakra-ui/react';
 import { SwiperSlide } from 'swiper/react';
 
+import { fonts } from 'config';
 import { Review } from 'models';
 import { Carousel } from 'components/core';
 
@@ -76,7 +77,7 @@ const ReviewSlide: FC<ReviewSlideProps> = ({ item }) => {
             top='60%'
             px='150px'
             w='full'
-            fontFamily='Clonoid'
+            fontFamily={fonts.heading}
             fontSize='16px'
             textTransform='uppercase'
             textAlign='center'

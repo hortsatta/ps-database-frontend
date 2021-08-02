@@ -1,3 +1,5 @@
+import { StepsStyleConfig as Steps } from 'chakra-ui-steps';
+
 const fonts = {
   heading: 'Clonoid, sans-serif',
   body: 'HelNeue, sans-serif'
@@ -25,7 +27,7 @@ const colors = {
 
 const Button = {
   baseStyle: {
-    fontFamily: 'Clonoid',
+    fontFamily: fonts.heading,
     fontWeight: 400,
     textTransform: 'uppercase',
     letterSpacing: '1px',
@@ -75,7 +77,7 @@ const Textarea = {
 const FormLabel = {
   baseStyle: {
     marginBottom: 0,
-    fontFamily: 'Clonoid',
+    fontFamily: fonts.heading,
     fontSize: '12px',
     textTransform: 'uppercase'
   }
@@ -89,8 +91,9 @@ const theme = {
     Button,
     Input,
     Textarea,
-    FormLabel
+    FormLabel,
+    Steps
   }
 };
 
-export { fonts, theme }
+export { colors, fonts, theme };

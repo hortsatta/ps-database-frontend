@@ -2,6 +2,7 @@ import { FC } from 'react';
 import Link from 'next/link';
 import { Box, Image as CImage, Link as CLink, Text } from '@chakra-ui/react';
 
+import { fonts } from 'config';
 import { Layout } from 'components/core';
 
 export const Footer: FC = () => (
@@ -42,7 +43,7 @@ export const Footer: FC = () => (
                 as='span'
                 mr='21px'
                 color='rgba(255,255,255,0.7)'
-                fontFamily='Clonoid'
+                fontFamily={fonts.heading}
                 fontSize='10px'
                 textTransform='uppercase'
                 lineHeight={1}
@@ -57,7 +58,7 @@ export const Footer: FC = () => (
                   padding='3px 14px'
                   bgColor='#151515'
                   color='brand.200'
-                  fontFamily='Clonoid'
+                  fontFamily={fonts.heading}
                   fontSize='9px'
                   textTransform='uppercase'
                   lineHeight={1}
@@ -79,7 +80,7 @@ export const Footer: FC = () => (
             <Text
               as='span'
               color='rgba(255,255,255,0.7)'
-              fontFamily='Clonoid'
+              fontFamily={fonts.heading}
               fontSize='10px'
               textTransform='uppercase'
               lineHeight={1}

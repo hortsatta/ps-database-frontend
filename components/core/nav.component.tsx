@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import Confetti from 'react-dom-confetti';
 
+import { fonts } from 'config';
 import { Module, ModuleConfig } from 'models';
 import {
   logoutStart,
@@ -74,6 +75,7 @@ export const Nav: FC<Props> = ({ menus, moduleConfig }) => {
     dispatch(logoutStart());
 
     const debounce = setTimeout(() => {
+      setOpenAccount(false);
       dispatch(logoutSuccess());
       clearTimeout(debounce);
     }, 1500);
@@ -114,7 +116,7 @@ export const Nav: FC<Props> = ({ menus, moduleConfig }) => {
                   p='4px 18px'
                   bgColor='#232323'
                   color='#fcae12'
-                  fontFamily='Clonoid'
+                  fontFamily={fonts.heading}
                   fontSize='10px'
                   textAlign='center'
                   lineHeight={1}
@@ -135,7 +137,7 @@ export const Nav: FC<Props> = ({ menus, moduleConfig }) => {
                     h='14px'
                     boxSizing='content-box'
                   />
-                  {currentUser.username}
+                  {currentUser?.username}
                 </CLink>
                 <UserAccountMenu
                   open={openAccount}
