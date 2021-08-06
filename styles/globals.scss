@@ -1,10 +1,11 @@
 @use 'fonts';
+@use 'variables';
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'HelNeue', 'Arial', sans-serif;
+  font-family: variables.$primary-font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -27,7 +28,7 @@ li.menu-item {
     a {
       padding: 4px 18px;
       background-color: #232323;
-      color: #fcae12;
+      color: variables.$brand-200;
       font-size: 10px;
       line-height: 1;
       border: 2px solid #c98b0e;
@@ -41,6 +42,112 @@ li.menu-item {
 
   a:hover {
     text-decoration: none;
+  }
+}
+
+.multi-select.error .select__control:not(.select__control--is-focused) {
+  border-color: #E53E3E;
+  box-shadow: 0px 1px 0px 0px #e53e3e;
+}
+
+.chakra-form-control {
+  .react-datepicker-wrapper {
+    display: block;
+  }
+
+  .react-datepicker {
+    background-color: #232323;
+    border-color: #292929;
+    border-radius: 0;
+
+    &__triangle {
+      left: 50%;
+    }
+
+    &__header {
+      padding: 14px 0;
+      background-color: variables.$brand-150;
+      border: 0;
+
+      &:not(.react-datepicker__header--has-time-select) {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+    }
+
+    &__current-month,
+    &__day-name {
+      color: white;
+    }
+
+    &__current-month {
+      padding-bottom: 6px;
+      font-family: variables.$secondary-font;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    &__day-names {
+      font-family: variables.$primary-font;
+    }
+
+    &__navigation {
+      top: 12px;
+    }
+
+    &__navigation-icon--previous::before,
+    &__navigation-icon--next::before {
+      border-color: white;
+    }
+
+    &__week {
+      font-family: variables.$primary-font;
+    }
+
+    &__day {
+      color: white;
+
+      &:hover,
+      &--selected {
+        background-color: variables.$brand-300;
+        border-radius: 0;
+      }
+    }
+  }
+}
+
+.filepond--wrapper {
+  .filepond--root {
+    margin: 0;
+  }
+
+  .filepond--root {
+    font-family: variables.$primary-font;
+
+    &, .filepond--drop-label {
+      height: 432px;
+    }
+
+    .filepond--drop-label label {
+      color: rgba(255,255,255,1);
+      padding: 16px 32px;
+      border: 2px dotted rgba(255,255,255,0.5);
+      border-radius: 8px;
+    }
+  }
+
+  .filepond--credits {
+    display: none;
+  }
+
+  .filepond--panel-root {
+    background-color: variables.$brand-300;
+  }
+
+  .filepond--panel,
+  .filepond--panel-top,
+  .filepond--panel-bottom {
+    border-radius: 0;
   }
 }
 
@@ -71,4 +178,18 @@ li.menu-item {
 
 #chakra-toast-manager-bottom {
   transform: translateY(-65px);
+}
+
+.chakra-step {
+  > div:first-child > div:first-child {
+    background-color: rgba(255,255,255,0.1);
+  }
+
+  span {
+    color: #fff;
+  }
+
+  .chakra-collapse {
+    padding: 19px 32px 30px 32px;
+  }
 }
