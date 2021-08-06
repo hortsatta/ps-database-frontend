@@ -1,9 +1,9 @@
-type User = {
+import { AuditTrail } from './common.model';
+
+type User = AuditTrail & {
   id: number;
   username: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 type UserCredential = {
