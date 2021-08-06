@@ -1,6 +1,7 @@
 type Module = {
+  path: string;
+  name?: string;
   className?: string;
-  path?: string;
   label?: string;
   iconName?: string;
   tooltip?: string;
@@ -17,4 +18,9 @@ type NotificationMessage = {
   message: string;
 }
 
-export type { Module, ModuleConfig, NotificationMessage };
+type AuditTrail = {
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+}
+
+export type { AuditTrail, Module, ModuleConfig, NotificationMessage };
