@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Center, Text } from '@chakra-ui/react';
+import { fonts } from 'config';
 
 const Error404Page: FC = () => (
   <Center
@@ -14,7 +15,7 @@ const Error404Page: FC = () => (
       d='flex'
       flexDir='column'
       color='rgba(255,255,255,0.7)'
-      fontFamily='Clonoid'
+      fontFamily={fonts.heading}
       textAlign='center'
       textTransform='uppercase'
       lineHeight={1.2}

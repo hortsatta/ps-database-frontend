@@ -8,13 +8,9 @@ import {
   Button,
   Flex,
   FormControl,
-  FormLabel,
   Input,
-  SimpleGrid,
-  Tooltip,
-  VisuallyHidden
+  SimpleGrid
 } from '@chakra-ui/react';
-import { WarningTwoIcon } from '@chakra-ui/icons'
 
 import { UserCredential } from 'models';
 import { register } from 'services';
@@ -25,10 +21,12 @@ import {
   loginSuccess,
   selectLoading
 } from 'store/auth';
+import { FormLabel } from 'components/core';
 
 type FormData = UserCredential & {
   confirmPassword: string;
 }
+
 const defaultValues: FormData = {
   username: '',
   email: '',
@@ -54,7 +52,7 @@ export const RegisterForm: FC = () => {
   const [loading, setLoading] = useState(false);
 
   const methods = useForm<FormData>({ defaultValues, resolver: zodResolver(schema) });
-  const { control, formState: { errors }, handleSubmit, reset } = methods;
+  const { control, handleSubmit, reset } = methods;
 
   const handleSubmission = (e: FormEvent) => {
     e.preventDefault();
@@ -88,14 +86,7 @@ export const RegisterForm: FC = () => {
     })(e);
   };
 
-  const handleClearFields = () => {
-    reset({
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    })
-  }
+  const handleClearFields = () => reset(defaultValues);
 
   return (
     <FormProvider {...methods}>
@@ -115,16 +106,7 @@ export const RegisterForm: FC = () => {
                 field: { onChange, onBlur, value }
               }) => (
                 <FormControl isInvalid={!!error && isTouched}>
-                  <VisuallyHidden>Username</VisuallyHidden>
-                  <Box d='flex' alignItems='center'>
-                    <FormLabel>Username</FormLabel>
-                    {(!!error && isTouched) && <Tooltip
-                      label={error?.message}
-                      aria-label={error?.message}
-                    >
-                      <WarningTwoIcon />
-                    </Tooltip>}
-                  </Box>
+                  <FormLabel label='Username' error={error} isTouched={isTouched} />
                   <Input
                     variant='flushed'
                     value={value}
@@ -145,16 +127,7 @@ export const RegisterForm: FC = () => {
                 field: { onChange, onBlur, value }
               }) => (
                 <FormControl isInvalid={!!error && isTouched}>
-                  <VisuallyHidden>Email Address</VisuallyHidden>
-                  <Box d='flex' alignItems='center'>
-                    <FormLabel>Email Address</FormLabel>
-                    {(!!error && isTouched) && <Tooltip
-                      label={error?.message}
-                      aria-label={error?.message}
-                    >
-                      <WarningTwoIcon />
-                    </Tooltip>}
-                  </Box>
+                  <FormLabel label='Email' error={error} isTouched={isTouched} />
                   <Input
                     type='email'
                     variant='flushed'
@@ -176,16 +149,7 @@ export const RegisterForm: FC = () => {
                 field: { onChange, onBlur, value }
               }) => (
                 <FormControl isInvalid={!!error && isTouched}>
-                  <VisuallyHidden>Password</VisuallyHidden>
-                  <Box d='flex' alignItems='center'>
-                    <FormLabel>Password</FormLabel>
-                    {(!!error && isTouched) && <Tooltip
-                      label={error?.message}
-                      aria-label={error?.message}
-                    >
-                      <WarningTwoIcon />
-                    </Tooltip>}
-                  </Box>
+                  <FormLabel label='Password' error={error} isTouched={isTouched} />
                   <Input
                     type='password'
                     variant='flushed'
@@ -207,16 +171,7 @@ export const RegisterForm: FC = () => {
                 field: { onChange, onBlur, value }
               }) => (
                 <FormControl isInvalid={!!error && isTouched}>
-                  <VisuallyHidden>Repeat Password</VisuallyHidden>
-                  <Box d='flex' alignItems='center'>
-                    <FormLabel>Repeat Password</FormLabel>
-                    {(!!error && isTouched) && <Tooltip
-                      label={error?.message}
-                      aria-label={error?.message}
-                    >
-                      <WarningTwoIcon />
-                    </Tooltip>}
-                  </Box>
+                  <FormLabel label='Repeat Password' error={error} isTouched={isTouched} />
                   <Input
                     type='password'
                     variant='flushed'

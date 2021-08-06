@@ -15,8 +15,7 @@ type Props = {
 }
 
 export const NavItem: FC<Props> = ({ item, active, children, onClick, empty }) => {
-  const { className, path, label, tooltip } = item;
-  const isAccount = tooltip.toLowerCase() === 'account';
+  const { className, path, label } = item;
 
   return (
     <ListItem

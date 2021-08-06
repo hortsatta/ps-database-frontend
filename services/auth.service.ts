@@ -68,4 +68,4 @@ const register = async (credential: UserCredential): Promise<User> => {
   return new Promise<User>(resolve => resolve(result));
 };
 
-export { checkLoginSession, login, logout, register };
+export { checkLoginSession, login, logout, register, parseUser };

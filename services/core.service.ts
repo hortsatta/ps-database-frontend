@@ -1,11 +1,10 @@
 import axios from 'axios';
-
-import { NEXT_API_URL, generateHeaders } from 'config';
+import { API_URL, generateHeaders } from 'config';
 import { ModuleConfig } from 'models';
 
 export const getModuleConfig = async (): Promise<ModuleConfig> => {
   const { status, data } = await axios.get(
-    `${NEXT_API_URL}/modules`,
+    `${API_URL}/modules`,
     generateHeaders()
   );
 

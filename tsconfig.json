@@ -15,12 +15,13 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "components": ["components/*"],
-      "config": ["config/*"],
-      "models": ["models/*"],
-      "services": ["services/*"],
-      "styles": ["styles/*"],
-      "utils": ["utils/*"]
+      "components": ["components"],
+      "config": ["config"],
+      "helpers": ["helpers"],
+      "models": ["models"],
+      "services": ["services"],
+      "styles": ["styles"],
+      "utils": ["utils"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

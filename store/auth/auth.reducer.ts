@@ -23,7 +23,7 @@ export const authReducer = createReducer(initialState, builder => (
       state.loading = false;
       state.currentUser = action.payload
     })
-    .addMatcher(isAnyOf (checkLoginSessionStart, loginStart, logoutStart), state => { console.log('start');
+    .addMatcher(isAnyOf (checkLoginSessionStart, loginStart, logoutStart), state => {
       state.loading = true;
     })
     .addMatcher(isAnyOf (checkLoginSessionFailure, loginFailure, logoutFailure), state => {
