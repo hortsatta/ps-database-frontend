@@ -22,7 +22,7 @@ registerPlugin(
 );
 
 export const ImageUpload: any = forwardRef<any>((props: any, ref) => {
-  const { name, onChange } = props;
+  const { name, height, onChange } = props;
   const pond = useRef<any>(null);
   const [files, setFiles] = useState<any>([]);
 
@@ -56,7 +56,7 @@ export const ImageUpload: any = forwardRef<any>((props: any, ref) => {
         allowMultiple={false}
         maxFiles={1}
         onupdatefiles={setFiles}
-        imagePreviewHeight={400}
+        imagePreviewHeight={height || 400}
       />
       <Button
         variant='link'
